@@ -1,0 +1,52 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdminEmail() {
+      return signedIn() &&
+        request.auth.token.email in ['nurikslam.beis@gmail.com'];
+    }
+
+    function isOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    match /topics/{document=**} {
+      allow read: if true;
+      allow write: if isAdminEmail();
+    }
+
+    match /levels/{document=**} {
+      allow read: if true;
+      allow write: if isAdminEmail();
+    }
+
+    match /courses/{document=**} {
+      allow read: if true;
+      allow write: if isAdminEmail();
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdminEmail();
+      allow create: if isOwner(userId) || isAdminEmail();
+      allow update: if isAdminEmail() || (
+        isOwner(userId) &&
+        request.resource.data.role == resource.data.role
+      );
+      allow delete: if isAdminEmail();
+
+      match /{document=**} {
+        allow read, write: if isOwner(userId) || isAdminEmail();
+      }
+    }
+
+    match /{document=**} {
+      allow read: if true;
+      allow write: if isAdminEmail();
+    }
+  }
+}

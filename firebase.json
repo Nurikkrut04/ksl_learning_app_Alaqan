@@ -1,0 +1,27 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "ksl-learning-app-15e40",
+          "appId": "1:807133463988:android:7a32ff934feb3fc4b01ee1",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ksl-learning-app-15e40",
+          "configurations": {
+            "web": "1:807133463988:web:a06117a62d93d94ab01ee1"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "functions": {
+    "source": "functions"
+  }
+}
